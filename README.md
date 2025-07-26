@@ -1,4 +1,4 @@
 # mazer
 
-## BootDev Hackathon 2025 submission
+#### BootDev Hackathon 2025 submission
 
