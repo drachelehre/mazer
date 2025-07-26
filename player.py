@@ -10,16 +10,15 @@ class Player(Entity):
         super().__init__(x, y, PLAYER_SIZE)
         self.last_move_vec = None
         self.rotation = 0
-        # Add the player instance to the specified groups
         self.add(*self.containers)
         self.timer = 0
 
     def triangle(self):
-        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        up = pygame.Vector2(0, 1).rotate(self.rotation)
         right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.size / 1.5
-        a = self.position + forward * self.size
-        b = self.position - forward * self.size - right
-        c = self.position - forward * self.size + right
+        a = self.position + up * self.size
+        b = self.position - up * self.size - right
+        c = self.position - up * self.size + right
         return [a, b, c]
 
     def draw(self, screen):
@@ -47,4 +46,30 @@ class Player(Entity):
 
         self.position += move_vec
         self.last_move_vec = move_vec  # store for sliding correction
+
+        # game boundary resolution, no more wandering offscreen
+        bounced = False
+        normal = None
+
+        if self.position.x < self.size:
+            self.position.x = self.size
+            normal = pygame.Vector2(1, 0)
+            bounced = True
+        elif self.position.x > SCREEN_WIDTH - self.size:
+            self.position.x = SCREEN_WIDTH - self.size
+            normal = pygame.Vector2(-1, 0)
+            bounced = True
+
+        if self.position.y < self.size:
+            self.position.y = self.size
+            normal = pygame.Vector2(0, 1)
+            bounced = True
+        elif self.position.y > SCREEN_HEIGHT - self.size:
+            self.position.y = SCREEN_HEIGHT - self.size
+            normal = pygame.Vector2(0, -1)
+            bounced = True
+
+        if bounced and self.last_move_vec.length() > 0:
+            reflect = self.last_move_vec.reflect(normal)
+            self.position += reflect * 0.5
 

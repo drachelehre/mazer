@@ -7,12 +7,14 @@ from mazefield import *
 from finish_flag import *
 import random
 from utils import *
-
+import time
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+
+    timer = TIMER_START
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -25,6 +27,7 @@ def main():
     FinishFlag.containers = (finish_flag, updatable, drawable)
 
     player = Player(SCREEN_WIDTH / 10, SCREEN_HEIGHT / 10)
+    finish_flag = FinishFlag(SCREEN_WIDTH - 50, SCREEN_HEIGHT - 50, FLAG_WIDTH, FLAG_HEIGHT)
     field = MazeField()
 
     dt = 0
@@ -40,10 +43,13 @@ def main():
 
         Wall(x, y, width, height, rotation)
 
+    font = pygame.font.SysFont(None, 36)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+
         for obj in updatable:
             obj.update(dt)
 
@@ -56,17 +62,17 @@ def main():
 
         collided = False
         for wall in walls:
-            if polygons_collide(player.triangle(), wall.polygon()):
+            if polygons_collide(player.triangle(), wall.wall_shape()):
                 collided = True
 
-                # Step 1: revert to old position
+                # return to previous position
                 player.position = old_pos
 
-                # Step 2: get wall surface vector (approximate by nearest edge)
+                # approximate wall position
                 player_poly = player.triangle()
-                wall_poly = wall.polygon()
+                wall_poly = wall.wall_shape()
 
-                # Find closest edge on wall to the player
+                # find closest edge on wall to the player
                 closest_edge = None
                 min_dist = float('inf')
                 for i in range(len(wall_poly)):
@@ -82,18 +88,30 @@ def main():
                     a, b = closest_edge
                     wall_edge = (b - a).normalize()
 
-                    # Step 3: project movement onto the wall edge
+                    # hit the wall
                     move_vec = player.last_move_vec
                     slide_vec = move_vec.project(wall_edge)
 
-                    # Step 4: apply the slide
+                    # apply the slide
                     player.position += slide_vec
 
                 break
 
+        if polygons_collide(player.triangle(), finish_flag.flag_shape()):
+            print("Good job! You win!")
+            return
+
+        font = pygame.font.SysFont(None, 36)
+        timer_text = font.render(f"Time: {int(timer)}", True, pygame.Color("white"))
+        screen.blit(timer_text, (10, 10))
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000
+        timer -= dt
+        if timer <= 0:
+            print("Time's up!")
+            pygame.quit()
+            return
 
 
 if __name__ == "__main__":
