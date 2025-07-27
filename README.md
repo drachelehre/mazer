@@ -23,9 +23,13 @@ Clone
 git clone https://github.com/drachelehre/mazer
 cd mazer
 python3 -m venv .venv
-source .venv/bin/activate
-# if windows 
+
 pip install -r requirements.txt
+#you only need to install once
+
+#to play make sure you activate the virtual environment
+source .venv/bin/activate
+# if windows .venv\Scripts\activate.bat
 python main.py
 ```
 
