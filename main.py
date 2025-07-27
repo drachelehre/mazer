@@ -9,6 +9,7 @@ import random
 from utils import *
 import time
 
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -27,8 +28,8 @@ def main():
     FinishFlag.containers = (finish_flag, updatable, drawable)
 
     player = Player(SCREEN_WIDTH / 10, SCREEN_HEIGHT / 10)
-    finish_flag = FinishFlag(SCREEN_WIDTH - 50, SCREEN_HEIGHT - 50, FLAG_WIDTH, FLAG_HEIGHT)
-    field = MazeField()
+    finish_flag = FinishFlag(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, FLAG_WIDTH, FLAG_HEIGHT, player)
+    field = MazeField(player)
 
     dt = 0
 
@@ -61,6 +62,7 @@ def main():
         old_pos = player.position - player.last_move_vec
 
         collided = False
+
         for wall in walls:
             if polygons_collide(player.triangle(), wall.wall_shape()):
                 collided = True
