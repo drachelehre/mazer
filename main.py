@@ -13,6 +13,7 @@ import time
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Mazer")
     clock = pygame.time.Clock()
 
     timer = TIMER_START
@@ -49,7 +50,7 @@ def main():
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return
+                pygame.quit()
 
         for obj in updatable:
             obj.update(dt)
@@ -117,4 +118,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    play_again = True
+    while play_again:
+        main()
+        ask = input("Play again? (y/n) ")
+        if ask not in ['y', 'Y']:
+            play_again = False
+
