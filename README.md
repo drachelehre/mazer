@@ -19,12 +19,14 @@ Not hard enough? Good (or bad) news! The goal will run from you! Don't think the
 
 Clone
 
-`git clone https://github.com/drachelehre/mazer
+```
+git clone https://github.com/drachelehre/mazer
 cd mazer
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python main.py`
+python main.py
+```
 
 ---
 
