@@ -1,6 +1,7 @@
 import pygame
 from entity import *
 from constants import *
+from drill import *
 
 
 class Player(Entity):
@@ -12,6 +13,8 @@ class Player(Entity):
         self.rotation = 0
         self.add(*self.containers)
         self.timer = 0
+        self.drill_state = False
+        self.drill_timer = 0.0
 
     def triangle(self):
         up = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -22,7 +25,8 @@ class Player(Entity):
         return [a, b, c]
 
     def draw(self, screen):
-        pygame.draw.polygon(screen, "blue", self.triangle())
+        color = "yellow" if self.drill_state else "blue"
+        pygame.draw.polygon(screen, color, self.triangle(), width=2)
 
     def rotate(self, dt):
         self.rotation += (PLAYER_TURN_SPEED * dt)
@@ -76,3 +80,8 @@ class Player(Entity):
             reflect = self.last_move_vec.reflect(normal)
             self.position += reflect * 0.5
 
+        if self.drill_state:
+            self.drill_timer += dt
+            if self.drill_timer > DRILL_DURATION:
+                self.drill_state = False
+                self.drill_timer = 0.0

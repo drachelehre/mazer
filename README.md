@@ -41,6 +41,9 @@ As you play, a small wall is placed front of the player every second and-a-half.
 
 You have 30 seconds to chase down the fleeing flag!
 
+Keep an eye out for the red drill pickup! It can help in
+chase by breaking all walls in front of you!
+
 It will ask if you want to play again in the terminal. Be warned that if you want, it will start immediately.
 
 ---

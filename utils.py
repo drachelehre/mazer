@@ -1,4 +1,7 @@
 import pygame
+from random import *
+from constants import *
+from drill import *
 
 
 def polygons_collide(poly1, poly2):
@@ -19,3 +22,13 @@ def polygons_collide(poly1, poly2):
                 return False  # Separating axis found
 
     return True  # No separating axis → collision
+
+
+def spawn_drill(player):
+    padding = 50  # keep drills away from edges
+    x = randint(padding, SCREEN_WIDTH - padding)
+    y = randint(padding, SCREEN_HEIGHT - padding)
+    size = DRILL_SIZE  # define in constants.py
+
+    drill = Drill(x, y, size, player, DRILL_DURATION)
+    return drill
