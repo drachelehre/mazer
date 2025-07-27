@@ -50,7 +50,7 @@ Written entirely in Python using PyGame module
 
 ---
 
-Built for the BootDev Hackathon 2025
+Built for the BootDev Hackathon 2025.
 
 Judges, developers... Anyone, really! Feel free to:
 
@@ -59,3 +59,4 @@ Judges, developers... Anyone, really! Feel free to:
 - Fork it and put your own spin on it
 
 - Spread the word!
+#bootdev #hackathon #drachelehre
